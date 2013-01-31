@@ -16,8 +16,9 @@ LIB_PATH='/usr/lib/system'
 PLATOFRM_PATH_SIM ='/iPhoneSimulator.platform'
 PLATOFRM_PATH_IOS ='/iPhoneOS.platform'
 #SDK_PATH_SIM ='/Developer/SDKs/iPhoneSimulator5.1.sdk'
+#SDK_PATH_IOS='/Developer/SDKs/iPhoneOS6.0.sdk'
 SDK_PATH_SIM ='/Developer/SDKs/iPhoneSimulator6.0.sdk'
-SDK_PATH_IOS='/Developer/SDKs/iPhoneOS6.0.sdk'
+SDK_PATH_IOS='/Developer/SDKs/iPhoneOS6.1.sdk'
 
 FFMPEG_BUILD_ARGS_SIM = [
 '--assert-level=2',
@@ -73,6 +74,34 @@ FFMPEG_BUILD_ARGS = [
 #'--enable-nonfree',
 '--enable-gpl',
 '--enable-version3',
+'--disable-ffplay',
+'--disable-ffprobe',
+'--disable-indevs',
+'--disable-ffserver',
+#'--disable-mmx',
+'--disable-encoders', 
+'--disable-debug',
+'--disable-decoders', 
+'--enable-decoder=mp2',
+'--enable-decoder=mp2float',
+'--enable-decoder=mpeg2video',
+'--enable-decoder=ac3',
+'--enable-decoder=aac',
+'--disable-parsers', 
+'--enable-parser=mpegaudio',
+'--enable-parser=mpegvideo', 
+'--enable-parser=ac3',
+'--enable-parser=aac',
+'--disable-bsfs', 
+'--disable-filters', 
+'--disable-muxers', 
+'--enable-muxer=mpeg2video',
+'--disable-demuxers', 
+'--enable-demuxer=mpegts',
+'--disable-protocols', 
+'--enable-protocol=file', 
+'--enable-protocol=http', 
+'--enable-protocol=tcp',
 ]
 
 FFMPEG_LIBS = [
