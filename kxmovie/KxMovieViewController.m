@@ -239,7 +239,7 @@ static NSMutableDictionary * gHistory;
     _topHUD.opaque = NO;
     _bottomHUD.opaque = NO;
     
-    _topHUD.frame = CGRectMake(0,0,width,30);
+    _topHUD.frame = CGRectMake(0,0,width,40);
     _bottomHUD.frame = CGRectMake(30,height-(75+15),width-(30*2),75);
     
     _topHUD.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -251,12 +251,14 @@ static NSMutableDictionary * gHistory;
     // top hud
     
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _doneButton.frame = CGRectMake(0,4,50,24);
+    _doneButton.frame = CGRectMake(5,4,45,30);
     _doneButton.backgroundColor = [UIColor clearColor];
+    
+    
+    [_doneButton setBackgroundImage:[[UIImage imageNamed:@"kxmovie.bundle/blueButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)] forState:UIControlStateNormal];
     [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_doneButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
     _doneButton.titleLabel.font = [UIFont systemFontOfSize:12];
-    _doneButton.showsTouchWhenHighlighted = YES;
     [_doneButton addTarget:self action:@selector(doneDidTouch:) forControlEvents:UIControlEventTouchUpInside];
     
     _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(48,5,50,20)];
@@ -295,7 +297,9 @@ static NSMutableDictionary * gHistory;
     [_topHUD addSubview:_progressLabel];
     [_topHUD addSubview:_progressSlider];
     [_topHUD addSubview:_leftLabel];
+#ifdef DEBUG
     [_topHUD addSubview:_infoButton];
+#endif
     
     // bottom hud
     
