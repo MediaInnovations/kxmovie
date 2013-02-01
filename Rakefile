@@ -234,7 +234,7 @@ end
 
 def cleanMovieLib(config)
 	buildDir = Pathname.new 'tmp/build'	
-  	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration #{config} -sdk iphoneos6.0 clean SYMROOT=#{buildDir}"
+  	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration #{config} -sdk iphoneos6.1 clean SYMROOT=#{buildDir}"
 	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration #{config} -sdk iphonesimulator6.0 clean SYMROOT=#{buildDir}"  	
 end
 
