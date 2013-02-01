@@ -222,17 +222,6 @@ static NSMutableDictionary * gHistory;
     CGFloat width = bounds.size.width;
     CGFloat height = bounds.size.height;
     
-#ifdef 0
-    _messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20,40,width-40,40)];
-    _messageLabel.backgroundColor = [UIColor clearColor];
-    _messageLabel.textColor = [UIColor redColor];
-    _messageLabel.font = [UIFont systemFontOfSize:14];
-    _messageLabel.numberOfLines = 2;
-    _messageLabel.textAlignment = NSTextAlignmentCenter;
-    _messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:_messageLabel];
-#endif
-    
     _topHUD      = [[HudView alloc] initWithFrame:CGRectMake(0,0,0,0)];
     _bottomHUD   = [[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)];
     
@@ -261,7 +250,7 @@ static NSMutableDictionary * gHistory;
     _doneButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [_doneButton addTarget:self action:@selector(doneDidTouch:) forControlEvents:UIControlEventTouchUpInside];
     
-    _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(48,10,45,20)];
+    _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(55,10,45,20)];
     _progressLabel.backgroundColor = [UIColor clearColor];
     _progressLabel.opaque = NO;
     _progressLabel.adjustsFontSizeToFitWidth = NO;
@@ -270,14 +259,14 @@ static NSMutableDictionary * gHistory;
     _progressLabel.text = @"00:00:00";
     _progressLabel.font = [UIFont systemFontOfSize:12];
     
-    _progressSlider = [[UISlider alloc] initWithFrame:CGRectMake(95,9,width-175,20)];
+    _progressSlider = [[UISlider alloc] initWithFrame:CGRectMake(105,9,width-180,20)];
     _progressSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _progressSlider.continuous = NO;
     _progressSlider.value = 0;
     [_progressSlider setThumbImage:[UIImage imageNamed:@"kxmovie.bundle/sliderthumb"]
                           forState:UIControlStateNormal];
     
-    _leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-78,10,60,20)];
+    _leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-62,10,60,20)];
     _leftLabel.backgroundColor = [UIColor clearColor];
     _leftLabel.opaque = NO;
     _leftLabel.adjustsFontSizeToFitWidth = NO;
@@ -297,9 +286,6 @@ static NSMutableDictionary * gHistory;
     [_topHUD addSubview:_progressLabel];
     [_topHUD addSubview:_progressSlider];
     [_topHUD addSubview:_leftLabel];
-#ifdef DEBUG
-    [_topHUD addSubview:_infoButton];
-#endif
     
     // bottom hud
     
@@ -811,7 +797,7 @@ static NSMutableDictionary * gHistory;
                         
                             const CGFloat delta = _moviePosition - frame.position;
                             
-                            if (delta < -2.0) {
+                            if (delta < -.1) {
                                 
                                 NSLog(@"desync audio (outrun) wait %.4f %.4f", _moviePosition, frame.position);
                                 memset(outData, 0, numFrames * numChannels * sizeof(float));
@@ -820,7 +806,7 @@ static NSMutableDictionary * gHistory;
                             
                             [_audioFrames removeObjectAtIndex:0];
                             
-                            if (delta > 2.0 && count > 1) {
+                            if (delta > .1 && count > 1) {
                                 
                                 NSLog(@"desync audio (lags) skip %.4f %.4f", _moviePosition, frame.position);
                                 continue;
@@ -1103,19 +1089,6 @@ static NSMutableDictionary * gHistory;
     
     if (_decoder.duration != MAXFLOAT)
         _leftLabel.text = formatTimeInterval(duration - position, YES);
-    
-            
-#if 0
-    const NSTimeInterval durationSinceStart = [NSDate timeIntervalSinceReferenceDate] - _startTime;
-    _messageLabel.text = [NSString stringWithFormat:@"%d %d %d - %@%@ %@\n%@",
-                          _videoFrames.count,
-                          _audioFrames.count,
-                          _scheduledDecode,
-                          formatTimeInterval(durationSinceStart, NO),
-                          durationSinceStart > _moviePosition + 0.5 ? @" (lags)" : @"",
-                          _decoder.isEOF ? @"- END" : @"",
-                          _buffered ? [NSString stringWithFormat:@"buffering %.1f%%", _bufferedDuration / _minBufferedDuration * 100] : @""];
-#endif
 }
 
 - (void) showHUD: (BOOL) show

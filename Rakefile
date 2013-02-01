@@ -280,8 +280,8 @@ task :build_movie_release do
 	FileUtils.move Pathname.new('tmp/build/Release-iphoneos/libkxmovie.a'), Pathname.new('tmp/build/Release-iphoneos/libkxmovie_armv7s.a')	
 
 	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration Release -sdk iphoneos6.1 build SYMROOT=#{buildDir} -arch armv7"	
-	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration Debug -sdk iphonesimulator6.0 build SYMROOT=#{buildDir}"	
-	system_or_exit "lipo -create -arch armv7 tmp/build/Release-iphoneos/libkxmovie.a -arch armv7 tmp/build/Release-iphoneos/libkxmovie_armv7s.a -arch i386 tmp/build/Debug-iphonesimulator/libkxmovie.a -output tmp/build/libkxmovie.a"
+	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration Release -sdk iphonesimulator6.0 build SYMROOT=#{buildDir}"	
+	system_or_exit "lipo -create -arch armv7 tmp/build/Release-iphoneos/libkxmovie.a -arch armv7 tmp/build/Release-iphoneos/libkxmovie_armv7s.a -arch i386 tmp/build/Release-iphonesimulator/libkxmovie.a -output tmp/build/libkxmovie.a"
 	
 	#FileUtils.copy Pathname.new('tmp/build/Release-iphoneos/libkxmovie.a'), buildDir
 end
@@ -290,6 +290,13 @@ desc "Copy to output folders"
 task :copy_movie do	
 	copyToOutput 'output'
 	copyToOutput '../iOS/KxMovie'
+	# dest = ensureDir 'output'
+	# FileUtils.move Pathname.new('tmp/build/libkxmovie.a'), dest	
+	# FileUtils.copy Pathname.new('libs/libavutil.a'), dest
+	# FileUtils.copy Pathname.new('kxmovie/KxMovieViewController.h'), dest	
+	# FileUtils.copy Pathname.new('kxmovie/KxAudioManager.h'), dest	
+	# FileUtils.copy Pathname.new('kxmovie/KxMovieDecoder.h'), dest
+	# FileUtils.copy_entry Pathname.new('kxmovie/kxmovie.bundle'), dest + 'kxmovie.bundle'
 end	
 
 ##
