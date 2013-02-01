@@ -222,7 +222,7 @@ static NSMutableDictionary * gHistory;
     CGFloat width = bounds.size.width;
     CGFloat height = bounds.size.height;
     
-#ifdef DEBUG
+#ifdef 0
     _messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20,40,width-40,40)];
     _messageLabel.backgroundColor = [UIColor clearColor];
     _messageLabel.textColor = [UIColor redColor];
@@ -261,7 +261,7 @@ static NSMutableDictionary * gHistory;
     _doneButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [_doneButton addTarget:self action:@selector(doneDidTouch:) forControlEvents:UIControlEventTouchUpInside];
     
-    _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(48,5,50,20)];
+    _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(48,10,45,20)];
     _progressLabel.backgroundColor = [UIColor clearColor];
     _progressLabel.opaque = NO;
     _progressLabel.adjustsFontSizeToFitWidth = NO;
@@ -270,14 +270,14 @@ static NSMutableDictionary * gHistory;
     _progressLabel.text = @"00:00:00";
     _progressLabel.font = [UIFont systemFontOfSize:12];
     
-    _progressSlider = [[UISlider alloc] initWithFrame:CGRectMake(100,4,width-182,20)];
+    _progressSlider = [[UISlider alloc] initWithFrame:CGRectMake(95,9,width-175,20)];
     _progressSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _progressSlider.continuous = NO;
     _progressSlider.value = 0;
     [_progressSlider setThumbImage:[UIImage imageNamed:@"kxmovie.bundle/sliderthumb"]
                           forState:UIControlStateNormal];
     
-    _leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-80,5,60,20)];
+    _leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-78,10,60,20)];
     _leftLabel.backgroundColor = [UIColor clearColor];
     _leftLabel.opaque = NO;
     _leftLabel.adjustsFontSizeToFitWidth = NO;
@@ -288,7 +288,7 @@ static NSMutableDictionary * gHistory;
     _leftLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     
     _infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    _infoButton.frame = CGRectMake(width-25,5,20,20);
+    _infoButton.frame = CGRectMake(width-25,10,20,20);
     _infoButton.showsTouchWhenHighlighted = YES;
     _infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [_infoButton addTarget:self action:@selector(infoDidTouch:) forControlEvents:UIControlEventTouchUpInside];
@@ -1103,7 +1103,7 @@ static NSMutableDictionary * gHistory;
         _leftLabel.text = formatTimeInterval(duration - position, YES);
     
             
-#ifdef DEBUG
+#if 0
     const NSTimeInterval durationSinceStart = [NSDate timeIntervalSinceReferenceDate] - _startTime;
     _messageLabel.text = [NSString stringWithFormat:@"%d %d %d - %@%@ %@\n%@",
                           _videoFrames.count,
@@ -1162,7 +1162,7 @@ static NSMutableDictionary * gHistory;
     
     _bufferedDuration = 0;
     
-    position = MIN(_decoder.duration - 1, MAX(0, position));
+    position = MIN(_decoder.startTime + _decoder.duration - 1, MAX(0, position + _decoder.startTime));
     
     @synchronized (_decoder) {
         _decoder.position = position;

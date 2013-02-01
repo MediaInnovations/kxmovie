@@ -40,7 +40,15 @@
         
             @"rtmp://aragontvlivefs.fplive.net/aragontvlive-live/stream_normal_abt",
             @"rtmp://ucaster.eu:1935/live/_definst_/discoverylacajatv",
-            @"rtmp://edge01.fms.dutchview.nl/botr/bunny.flv"
+            @"rtmp://edge01.fms.dutchview.nl/botr/bunny.flv",
+            @"http://192.168.44.55:49152/web/60",
+            @"http://192.168.44.55:49152/web/150",
+            @"http://192.168.44.55:49152/web/100",
+            @"http://192.168.44.55:49152/web/125",
+            @"http://192.168.44.55:49152/web/112",
+            @"http://192.168.44.55:49152/web/257",
+            @"http://192.168.44.55:49152/web/131",
+            @"http://192.168.44.55:49152/web/257"
         ];
         
     }
