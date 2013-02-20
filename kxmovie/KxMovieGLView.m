@@ -564,7 +564,7 @@ exit:
 {
     const BOOL fit      = (self.contentMode == UIViewContentModeScaleAspectFit);
     const float width   = _decoder.frameWidth;
-    const float height  = _decoder.frameHeight;
+    const float height  = _decoder.frameWidth * 9 / 16; // FORCE 16/9 aspect ratio
     const float dH      = (float)_backingHeight / height;
     const float dW      = (float)_backingWidth	  / width;
     const float dd      = fit ? MIN(dH, dW) : MAX(dH, dW);

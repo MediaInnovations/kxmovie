@@ -73,8 +73,8 @@ enum {
 
 static NSMutableDictionary * gHistory;
 
-#define DEFAULT_DECODE_DURATION   0.1
-#define LOCAL_BUFFERED_DURATION   0.3
+#define DEFAULT_DECODE_DURATION   0.4
+#define LOCAL_BUFFERED_DURATION   0.8
 #define NETWORK_BUFFERED_DURATION 3.0
 
 @interface KxMovieViewController () {
@@ -797,7 +797,7 @@ static NSMutableDictionary * gHistory;
                         
                             const CGFloat delta = _moviePosition - frame.position;
                             
-                            if (delta < -.2) {
+                            if (delta < -.25) {
                                 
                                 NSLog(@"desync audio (outrun) wait %.4f %.4f", _moviePosition, frame.position);
                                 memset(outData, 0, numFrames * numChannels * sizeof(float));
@@ -806,7 +806,7 @@ static NSMutableDictionary * gHistory;
                             
                             [_audioFrames removeObjectAtIndex:0];
                             
-                            if (delta > .2 && count > 1) {
+                            if (delta > .25 && count > 1) {
                                 
                                 NSLog(@"desync audio (lags) skip %.4f %.4f", _moviePosition, frame.position);
                                 continue;
