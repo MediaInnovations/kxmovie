@@ -601,7 +601,7 @@ static NSMutableDictionary * gHistory;
 {
     NSAssert(_decoder.duration != MAXFLOAT, @"bugcheck");
     UISlider *slider = sender;
-    [self setMoviePosition:slider.value * _decoder.duration];
+    [self setMoviePosition:(slider.value * _decoder.duration) + _decoder.startTime];
 }
 
 #pragma mark - private
@@ -1135,7 +1135,7 @@ static NSMutableDictionary * gHistory;
     
     _bufferedDuration = 0;
     
-    position = MIN(_decoder.startTime + _decoder.duration - 1, MAX(0, position + _decoder.startTime));
+    position = MIN(_decoder.startTime + _decoder.duration - 1, MAX(0, position));
     
     @synchronized (_decoder) {
         _decoder.position = position;
