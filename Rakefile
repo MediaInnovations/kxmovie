@@ -16,9 +16,9 @@ LIB_PATH='/usr/lib/system'
 PLATOFRM_PATH_SIM ='/iPhoneSimulator.platform'
 PLATOFRM_PATH_IOS ='/iPhoneOS.platform'
 #SDK_PATH_SIM ='/Developer/SDKs/iPhoneSimulator5.1.sdk'
+#SDK_PATH_IOS='/Developer/SDKs/iPhoneOS6.0.sdk'
 SDK_PATH_SIM ='/Developer/SDKs/iPhoneSimulator6.1.sdk'
 SDK_PATH_IOS='/Developer/SDKs/iPhoneOS6.1.sdk'
-
 
 FFMPEG_BUILD_ARGS_SIM = [
 '--assert-level=2',
@@ -42,7 +42,7 @@ FFMPEG_BUILD_ARGS_ARMV7 = [
 '--disable-armv5te',
 '--disable-armv6',
 '--disable-armv6t2',
-'--disable-armvfp',
+'--disable-vfp',
 ]
 
 FFMPEG_BUILD_ARGS_ARMV7S = [
@@ -58,7 +58,7 @@ FFMPEG_BUILD_ARGS_ARMV7S = [
 '--disable-armv5te',
 '--disable-armv6',
 '--disable-armv6t2',
-'--disable-armvfp',
+'--disable-vfp',
 ]
 
 FFMPEG_BUILD_ARGS = [
@@ -102,6 +102,7 @@ FFMPEG_BUILD_ARGS = [
 '--enable-protocol=file', 
 '--enable-protocol=http', 
 '--enable-protocol=tcp',
+'--disable-iconv',
 ]
 
 FFMPEG_LIBS = [
@@ -238,6 +239,20 @@ def cleanMovieLib(config)
 	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration #{config} -sdk iphonesimulator6.1 clean SYMROOT=#{buildDir}"  	
 end
 
+def copyToOutput(folder)
+	dest = ensureDir(folder)
+	FileUtils.copy Pathname.new('tmp/build/libkxmovie.a'), dest		
+	FileUtils.copy Pathname.new('libs/libavcodec.a'), dest
+	FileUtils.copy Pathname.new('libs/libavformat.a'), dest
+	FileUtils.copy Pathname.new('libs/libavutil.a'), dest
+	FileUtils.copy Pathname.new('libs/libswscale.a'), dest
+	FileUtils.copy Pathname.new('libs/libswresample.a'), dest
+	FileUtils.copy Pathname.new('kxmovie/KxMovieViewController.h'), dest	
+	FileUtils.copy Pathname.new('kxmovie/KxAudioManager.h'), dest	
+	FileUtils.copy Pathname.new('kxmovie/KxMovieDecoder.h'), dest
+	FileUtils.copy_entry Pathname.new('kxmovie/kxmovie.bundle'), dest + 'kxmovie.bundle'
+end
+
 desc "Clean libkxmovie-debug"
 task :clean_movie_debug do
 	cleanMovieLib 'Debug'
@@ -266,25 +281,23 @@ task :build_movie_release do
 	FileUtils.move Pathname.new('tmp/build/Release-iphoneos/libkxmovie.a'), Pathname.new('tmp/build/Release-iphoneos/libkxmovie_armv7s.a')	
 
 	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration Release -sdk iphoneos6.1 build SYMROOT=#{buildDir} -arch armv7"	
-	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration Debug -sdk iphonesimulator6.1 build SYMROOT=#{buildDir}"	
-	system_or_exit "lipo -create -arch armv7 tmp/build/Release-iphoneos/libkxmovie.a -arch armv7 tmp/build/Release-iphoneos/libkxmovie_armv7s.a -arch i386 tmp/build/Debug-iphonesimulator/libkxmovie.a -output tmp/build/libkxmovie.a"
+	system_or_exit "xcodebuild -project kxmovie.xcodeproj -target kxmovie -configuration Release -sdk iphonesimulator6.1 build SYMROOT=#{buildDir}"	
+	system_or_exit "lipo -create -arch armv7 tmp/build/Release-iphoneos/libkxmovie.a -arch armv7 tmp/build/Release-iphoneos/libkxmovie_armv7s.a -arch i386 tmp/build/Release-iphonesimulator/libkxmovie.a -output tmp/build/libkxmovie.a"
 	
 	#FileUtils.copy Pathname.new('tmp/build/Release-iphoneos/libkxmovie.a'), buildDir
 end
 
-desc "Copy to output folder"
+desc "Copy to output folders"
 task :copy_movie do	
-	dest = ensureDir 'output'	
-	FileUtils.move Pathname.new('tmp/build/libkxmovie.a'), dest		
-	FileUtils.copy Pathname.new('libs/libavcodec.a'), dest
-	FileUtils.copy Pathname.new('libs/libavformat.a'), dest
-	FileUtils.copy Pathname.new('libs/libavutil.a'), dest
-	FileUtils.copy Pathname.new('libs/libswscale.a'), dest
-	FileUtils.copy Pathname.new('libs/libswresample.a'), dest
-	FileUtils.copy Pathname.new('kxmovie/KxMovieViewController.h'), dest	
-	FileUtils.copy Pathname.new('kxmovie/KxAudioManager.h'), dest	
-	FileUtils.copy Pathname.new('kxmovie/KxMovieDecoder.h'), dest
-	FileUtils.copy_entry Pathname.new('kxmovie/kxmovie.bundle'), dest + 'kxmovie.bundle'
+	copyToOutput 'output'
+	copyToOutput '../iOS/KxMovie'
+	# dest = ensureDir 'output'
+	# FileUtils.move Pathname.new('tmp/build/libkxmovie.a'), dest	
+	# FileUtils.copy Pathname.new('libs/libavutil.a'), dest
+	# FileUtils.copy Pathname.new('kxmovie/KxMovieViewController.h'), dest	
+	# FileUtils.copy Pathname.new('kxmovie/KxAudioManager.h'), dest	
+	# FileUtils.copy Pathname.new('kxmovie/KxMovieDecoder.h'), dest
+	# FileUtils.copy_entry Pathname.new('kxmovie/kxmovie.bundle'), dest + 'kxmovie.bundle'
 end	
 
 ##
@@ -294,3 +307,4 @@ task :build_ffmpeg => [:check_gas_preprocessor, :build_ffmpeg_i386, :build_ffmpe
 task :build_movie => [:build_movie_release, :copy_movie] 
 task :build_all => [:build_ffmpeg, :build_movie] 
 task :default => [:build_all]
+task :copy => [:copy_movie]

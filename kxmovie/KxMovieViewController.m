@@ -123,6 +123,7 @@ static NSMutableDictionary * gHistory;
     CGFloat             _decodeDuration;
     CGFloat             _bufferedDuration;
     CGFloat             _minBufferedDuration;
+	CGFloat				_maxBufferedDuration;
     BOOL                _buffered;
     
     BOOL                _savedIdleTimer;
@@ -164,6 +165,7 @@ static NSMutableDictionary * gHistory;
         
         _decodeDuration = DEFAULT_DECODE_DURATION;
         _minBufferedDuration = LOCAL_BUFFERED_DURATION;
+		_maxBufferedDuration = _minBufferedDuration + 10;
         
         _parameters = parameters;
         
@@ -645,6 +647,8 @@ static NSMutableDictionary * gHistory;
             if ([val isKindOfClass:[NSNumber class]])
                 _decoder.disableDeinterlacing = [val boolValue];
         }
+		
+		_maxBufferedDuration = _minBufferedDuration + 10;
         
         if (self.isViewLoaded) {
             
@@ -991,8 +995,7 @@ static NSMutableDictionary * gHistory;
         }
     }
     
-    if (_bufferedDuration <= _minBufferedDuration) {
-        
+    if (_bufferedDuration < _maxBufferedDuration) {
         [self scheduleDecodeFrames];
     }
     
