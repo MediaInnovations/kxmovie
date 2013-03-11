@@ -761,10 +761,10 @@ enum {
     [view addGestureRecognizer:_doubleTapGestureRecognizer];
     [view addGestureRecognizer:_tapGestureRecognizer];
     
-    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    _panGestureRecognizer.enabled = NO;
-    
-    [view addGestureRecognizer:_panGestureRecognizer];
+//    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+//    _panGestureRecognizer.enabled = NO;
+//    
+//    [view addGestureRecognizer:_panGestureRecognizer];
 }
 
 - (UIView *) frameView
