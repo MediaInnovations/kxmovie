@@ -997,6 +997,7 @@ enum {
             
             [self pause];
             [self updateHUD];
+			[self doneDidTouch:self];
             return;
         }
 
