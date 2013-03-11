@@ -802,18 +802,29 @@ enum {
                         
                             const CGFloat delta = _moviePosition - frame.position;
                             
+							static int counter = 0;
+							
                             if (delta < -.25) {
                                 
-                                NSLog(@"desync audio (outrun) wait %.4f %.4f", _moviePosition, frame.position);
+                                NSLog(@"desync audio (outrun) wait %.4f %.4f delta:%f", _moviePosition, frame.position, delta);
                                 memset(outData, 0, numFrames * numChannels * sizeof(float));
+								if (++counter > 30) {
+									counter = 0;
+									_disableUpdateHUD = YES;
+									[self enableAudio:NO];
+									self.playing = NO;
+									[self play];
+								}
+								
                                 break; // silence and exit
                             }
+							counter = 0;
                             
                             [_audioFrames removeObjectAtIndex:0];
                             
                             if (delta > .25 && count > 1) {
                                 
-                                NSLog(@"desync audio (lags) skip %.4f %.4f", _moviePosition, frame.position);
+                                NSLog(@"desync audio (lags) skip %.4f %.4f delta:%f", _moviePosition, frame.position, delta);
                                 continue;
                             }
                             
