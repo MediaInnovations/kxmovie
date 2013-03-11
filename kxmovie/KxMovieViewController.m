@@ -71,7 +71,7 @@ enum {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static NSMutableDictionary * gHistory;
+//static NSMutableDictionary * gHistory;
 
 #define DEFAULT_DECODE_DURATION   0.4
 #define LOCAL_BUFFERED_DURATION   0.8
@@ -139,8 +139,8 @@ static NSMutableDictionary * gHistory;
 
 + (void)initialize
 {
-    if (!gHistory)
-        gHistory = [NSMutableDictionary dictionary];
+//    if (!gHistory)
+//        gHistory = [NSMutableDictionary dictionary];
 }
 
 + (id) movieViewControllerWithContentPath: (NSString *) path
@@ -430,11 +430,12 @@ static NSMutableDictionary * gHistory;
         
         [self pause];
         
-        if (_moviePosition == 0 || _decoder.isEOF)
-            [gHistory removeObjectForKey:_decoder.path];
-        else
-            [gHistory setValue:[NSNumber numberWithFloat:_moviePosition]
-                        forKey:_decoder.path];
+		// No history!!! Want to play back from start all the time
+//        if (_moviePosition == 0 || _decoder.isEOF)
+//            [gHistory removeObjectForKey:_decoder.path];
+//        else
+//            [gHistory setValue:[NSNumber numberWithFloat:_moviePosition]
+//                        forKey:_decoder.path];
     }
     
     if (_fullscreen)
@@ -680,10 +681,10 @@ static NSMutableDictionary * gHistory;
 
 - (void) restorePlay
 {
-    NSNumber *n = [gHistory valueForKey:_decoder.path];
-    if (n)
-        [self updatePosition:n.floatValue playMode:YES];
-    else
+//    NSNumber *n = [gHistory valueForKey:_decoder.path];
+//    if (n)
+//        [self updatePosition:n.floatValue playMode:YES];
+//    else
         [self play];
 }
 
